@@ -1,23 +1,46 @@
-import React, {useState} from 'react'
+import React from 'react'
 import Base from './Base'
+import SignOut from '../User/SignOut';
+import { useAuthState } from "react-firebase-hooks/auth";
+import auth from '../config/auth';
+import '../styles.css'
+import { Link } from 'react-router-dom';
+import UserDashBoard from '../User/UserDashBoard';
 
 const Home = () => {
-    const [count, setCount] = useState(0);
+    const [user] = useAuthState(auth);
 
-    const rightSideClicked = e => {
-        console.log("right side is clicked");
-        setCount(count + 1);
-    }
-
-
-    
-    return (
-        <Base title="Home Page" decription="This is our Home Page" >
-            <div className="col bg-dark text-white">
-                <div className="row btn btn-success">left side</div>
-                <div className="row btn btn-danger" onClick={rightSideClicked} >right side is clicked {count} time{count==1?"": "s"}</div>
+    const userIsNotLoggedIn = () =>
+        <div className="container-fluid">
+            <div className="jumbotron bg-dark text-white text-center">
+                <div className="row">
+                    <div className="col-md">
+                        <button type="button" class="btn btn-outline-success btn-lg" ><Link to="/signup">SignUp <i class="fas fa-user-plus"></i> </Link></button>
+                    </div>
+                    <div className="col-md">
+                        <button type="button" class="btn btn-outline-danger btn-lg" ><Link to="/signin">SignIn <i class="fas fa-user-check" ></i> </Link></button>
+                    </div>
+                </div>
             </div>
-        </Base>
+        </div>
+
+    return (
+        <div>
+            <Base title={user ? `Hello ${user}` : "Hello User"} description={user ? "These are your favourite Stocks" : "Please Create an account "} >
+                <section>
+                    {user ?
+                        <div>
+                            <UserDashBoard />
+                            < SignOut />
+                        </div>
+                        :
+                        < div >
+                            {userIsNotLoggedIn()}
+                        </div>
+                    }
+                </section>
+            </Base>
+        </div>
     )
 }
 

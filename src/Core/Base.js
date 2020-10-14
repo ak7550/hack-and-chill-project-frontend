@@ -1,15 +1,23 @@
 import React from 'react'
-import './Base.css'
+import "./Base.css";
 
 const Base = ({
-    title, description, children
+    title,
+    description,
+    className,
+    children
 }) => {
     return (
-        <>
-            <h1 className="align-center ak">{title}</h1>
-            <h4 className="align-left">{description}</h4>
-            {children}
-        </>
+        <div>
+            <div className="container-fluid">
+                <div className="jumbotron bg-dark text-white text-center">
+                    <h2 className="display-4">{title}</h2>
+                    <p className="lead">{description}</p>
+                </div>
+                <div className={className}>{children}</div>
+            </div>
+        </div>
+
     )
 }
 
